@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: text-similarity-app-ingress
+  namespace: text-similarity-app
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-dev
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - test.lacambra.tech
+    secretName: text-similarity-tls
+  rules:
+  - host: test.lacambra.tech
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: text-similarity-app-service
+            port:
+              number: 80
