@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: text-similarity-app
-        image: text-similarity-app:latest
+        image: alacambra/text-similarity-app-2:latest
         ports:
         - containerPort: 8501
         resources:
