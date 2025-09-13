@@ -1,15 +1,40 @@
-# Kubernetes Deployment Guide
+# Deployment Guide
 
 ## Prerequisites
 - Docker installed
-- kubectl configured to connect to your cluster
-- Access to a container registry (Docker Hub, ECR, GCR, etc.)
+- kubectl configured to connect to your cluster (for Kubernetes deployment)
+- Access to a container registry (Docker Hub, ECR, GCR, etc.) (for Kubernetes deployment)
 
-## Steps to Deploy
+## Local Development
+
+### Running with Streamlit
+```bash
+# Navigate to the application directory
+cd text_similarity_app
+
+# Install dependencies (if not already done)
+pip install -r requirements.txt
+
+# Run the application
+streamlit run app.py
+```
+
+### Running with Docker Locally
+```bash
+# Build the image (uses .dockerignore to exclude unnecessary files)
+docker build -t text-similarity-app:latest .
+
+# Run locally
+docker run -p 8501:8501 text-similarity-app:latest
+```
+
+Access the application at: `http://localhost:8501`
+
+## Production Deployment
 
 ### 1. Build and Push Docker Image
 ```bash
-# Build the image
+# Build the image (now optimized with .dockerignore)
 docker build -t text-similarity-app:latest .
 
 # Tag for your registry (replace with your registry URL)
@@ -19,13 +44,13 @@ docker tag text-similarity-app:latest YOUR_REGISTRY/text-similarity-app:latest
 docker push YOUR_REGISTRY/text-similarity-app:latest
 ```
 
-### 2. Update Deployment Manifest
+### 2. Update Deployment Manifest (Kubernetes)
 Update the image name in `k8s-deployment.yaml`:
 ```yaml
 image: YOUR_REGISTRY/text-similarity-app:latest
 ```
 
-### 3. Deploy to Kubernetes
+### 3. Deploy to Kubernetes Cluster
 ```bash
 # Apply the deployment
 kubectl apply -f k8s-deployment.yaml
